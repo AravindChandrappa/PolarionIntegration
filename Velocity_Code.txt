@@ -1,0 +1,196 @@
+Based on User and Status
+------------------------
+<div id="workItemReport">
+	 #set($selectedUser = $pageParameters.Users.toLucene())
+      #set($selectedStatus = $pageParameters.Status.toLucene())
+    #set($query = "author.id:$selectedUser AND status:$selectedStatus AND project.id:Demo_Aspice_Project")
+    #set($workItems = $transaction.workItems().search().query($query))
+    <style>
+    .fortable {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+    .forrow {
+
+    }
+    .forheading {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background-color : #b3ccff;
+    }
+    .fordata {
+        text-align:center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+</style>
+    <h2>Table of WorkItems=> User: $selectedUser And Status:$selectedStatus</h2>
+    <table class="fortable">
+        <tr class="forrow">
+            <th class="forheading">ID</th>
+			 <th class="forheading">Title</th>
+			 <th class="forheading">Status</th>
+			<th class="forheading">Type</th>
+          
+        </tr>
+        #foreach($item in $workItems)
+            <tr class="forrow">
+                <td class="fordata">$item.fields().id().render().withLinks() </td>
+                <td class="fordata">$item.fields().title().render()</td>
+                <td class="fordata">$item.fields().status.optionId()</td>
+                <td class="fordata">$item.fields().type().optionId()</td>
+            </tr>
+        #end
+    </table>
+	
+	
+Linked WorkItems
+----------------
+<div id="BackLinkedWorkItemReport">
+#set($workItemType = $pageParameters.LinkedWorItemTypes.toLucene())
+#set($query=" type:$workItemType AND project.id:Demo_Aspice_Project")
+#set($workItems = $transaction.workItems().search().query($query))
+<style>
+    .fortable {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+    .forrow {
+
+    }
+    .forheading {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background-color : #b3ccff;
+    }
+    .fordata {
+        text-align:center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+</style>
+<h2>Table of BackLinked WorkItems Report For: $workItemType</h2>
+<table class="fortable">
+	  <tr class="forrow">
+      			<th class="forheading">WorkItem Id</th>
+                <th class="forheading">Linked Item Id</th>
+                <th class="forheading">Linked Items Title</th>
+                <th class="forheading">Linked Items Type</th>
+    	</tr>
+    #foreach($item in $workItems)
+    #set($linkedWorkItemQuery = "linkedWorkItems:$item.fields.id().get()")
+    #set($linkedWorkItem = $transaction.workItems().search().query($linkedWorkItemQuery) )
+     #foreach($linkItems in $linkedWorkItem)
+            <tr>
+                  	 <td class="fordata">$item.fields().id().render().withLinks</td>
+                     <td class="fordata">$linkItems.fields().id().render().withLinks</td>
+                      <td class="fordata">$linkItems.fields().title().get()</td>
+                      <td class="fordata">$linkItems.fields().type().optionId()</td>
+              </tr>
+              #end
+    #end
+</table>
+</div>
+        
+		
+Work-items By Classification(Design And Test case)
+--------------------------------------------------
+
+<div id="DesignWorkItemReport">
+
+	 #set($designWorkItemType = $pageParameters.Design_WorkItem.toLucene())
+      #set($workItemType = $pageParameters.WorkItems.toLucene())
+    #set($query = "type:$workItemType AND Design_Classification:$designWorkItemType AND type:Design  AND project.id:Demo_Aspice_Project")
+    #set($workItems = $transaction.workItems().search().query($query))
+    #set($workItems = $transaction.workItems().search().query($query))
+    <style>
+    .fortable {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+    .forrow {
+
+    }
+    .forheading {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background-color : #b3ccff;
+    }
+    .fordata {
+        text-align:center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+</style>
+    <h2>Table for WorkItem Type $workItemType</h2>
+   <table class="fortable">
+        <tr class="forrow">
+            <th class="forheading">ID</th>
+			 <th class="forheading">Title</th>
+			 <th  class="forheading">Status</th>
+			<th  class="forheading">Type</th>  
+        </tr>
+        #foreach($item in $workItems)
+            <tr  class="forrow">
+                <td class="fordata">$item.fields().id().render().withLinks() </td>
+                <td class="fordata">$item.fields().title().render()</td>
+                <td class="fordata">$item.fields().status.optionId()</td>
+                <td class="fordata">$item.fields().type().optionId()</td>
+            </tr>
+        #end
+    </table>
+        
+		
+Workitem for All
+----------------
+<div id="workItemReport">
+	 #set($workItemType = $pageParameters.WorkItemType.toLucene())
+    #set($query = " type:$workItemType AND project.id:Demo_Aspice_Project")
+    #set($workItems = $transaction.workItems().search().query($query))
+    <style>
+    .fortable {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        width: 100%;
+    }
+    .forrow {
+
+    }
+    .forheading {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background-color : #b3ccff;
+    }
+    .fordata {
+        text-align:center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+</style>
+    <h2>Table for WorkItem Type $workItemType</h2>
+    <table class="fortable">
+        <tr class="forrow">
+            <th class="forheading">ID</th>
+			 <th class="forheading">Title</th>
+			 <th class="forheading">Status</th>
+			<th class="forheading">Type</th>
+          
+        </tr>
+        #foreach($item in $workItems)
+            <tr class="forrow">
+                <td class="fordata">$item.fields().id().render().withLinks() </td>
+                <td class="fordata">$item.fields().title().render()</td>
+                <td class="fordata">$item.fields().status.optionId()</td>
+                <td class="fordata">$item.fields().type().optionId()</td>
+            </tr>
+        #end
+    </table>
+	
+----------------------------------------------   End  --------------------------------------------------------
